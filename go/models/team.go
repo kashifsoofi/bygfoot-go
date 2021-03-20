@@ -59,5 +59,5 @@ type Team struct {
 	average_talent float64   // Average talent of the players at generation.
 	luck           float64   // A value that influences scoring chances etc. If > 1, the team's lucky, if < 1, it's unlucky. Only used for users' teams.
 	stadium        *Stadium
-	players        []Player
+	players        []*Player
 }
