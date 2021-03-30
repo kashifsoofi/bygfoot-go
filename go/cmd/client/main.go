@@ -1,10 +1,9 @@
 package main
 
 import (
-	"net"
+	"context"
 	"os"
 
-	internal "github.com/kashifsoofi/bygfoot-go/internal/api"
 	"github.com/kashifsoofi/bygfoot-go/pkg/api"
 	log "github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
@@ -28,23 +27,25 @@ func main() {
 		}).Warn("PORT env var not defined. Going with default")
 	}
 
-	lis, err := net.Listen("tcp", ":"+port)
+	var conn *grpc.ClientConn
+	conn, err := grpc.Dial(":"+port, grpc.WithInsecure())
 	if err != nil {
 		log.WithFields(log.Fields{
 			"Error": err.Error(),
-		}).Fatal("Failed to listen")
+		}).Fatal("Failed to connect")
 	}
+	defer conn.Close()
 
-	s := internal.Server{}
+	c := api.NewRegionServiceClient(conn)
 
-	grpcServer := grpc.NewServer()
-	log.Info("gRPC server started at ", port)
-
-	api.RegisterRegionServiceServer(grpcServer, &s)
-
-	if err := grpcServer.Serve(lis); err != nil {
+	resp, err := c.GetRegions(context.Background(), &api.GetRegionsRequest{})
+	if err != nil {
 		log.WithFields(log.Fields{
 			"Error": err.Error(),
-		}).Fatal("Failed to serve")
+		}).Fatal("Error when calling GetRegions")
 	}
+
+	log.WithFields(log.Fields{
+		"Regions": resp.Regions,
+	}).Info("Regions from server")
 }
