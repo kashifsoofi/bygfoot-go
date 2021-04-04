@@ -1,10 +1,12 @@
 module github.com/kashifsoofi/bygfoot-go
 
-go 1.15
+go 1.16
 
 require (
+	github.com/golang-migrate/migrate/v4 v4.14.1
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/google/uuid v1.2.0
+	github.com/mattn/go-sqlite3 v1.14.6
 	github.com/sirupsen/logrus v1.8.1
 	google.golang.org/grpc v1.36.1
 	google.golang.org/protobuf v1.26.0
