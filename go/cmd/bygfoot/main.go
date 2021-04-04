@@ -1,50 +1,19 @@
 package main
 
 import (
-	"net"
-	"os"
-
-	internal "github.com/kashifsoofi/bygfoot-go/internal/api"
-	"github.com/kashifsoofi/bygfoot-go/pkg/api"
+	"github.com/kashifsoofi/bygfoot-go/db"
 	log "github.com/sirupsen/logrus"
-	"google.golang.org/grpc"
 )
 
 func main() {
-	log.SetFormatter(&log.TextFormatter{
-		FullTimestamp: true,
-	})
-
-	var port string
-	var ok bool
-	if port, ok = os.LookupEnv("PORT"); ok {
-		log.WithFields(log.Fields{
-			"PORT": port,
-		}).Info("PORT env var defined")
-	} else {
-		port = "9000"
-		log.WithFields(log.Fields{
-			"PORT": port,
-		}).Warn("PORT env var not defined. Going with default")
-	}
-
-	lis, err := net.Listen("tcp", ":"+port)
+	sqliteDb, err := db.NewDB("bygfoot.db")
 	if err != nil {
-		log.WithFields(log.Fields{
-			"Error": err.Error(),
-		}).Fatal("Failed to listen")
+		log.Fatal(err)
 	}
+	defer sqliteDb.Close()
 
-	s := internal.Server{}
-
-	grpcServer := grpc.NewServer()
-	log.Info("gRPC server started at ", port)
-
-	api.RegisterRegionServiceServer(grpcServer, &s)
-
-	if err := grpcServer.Serve(lis); err != nil {
-		log.WithFields(log.Fields{
-			"Error": err.Error(),
-		}).Fatal("Failed to serve")
+	err = db.RunMigrations(sqliteDb)
+	if err != nil {
+		log.Fatal(err)
 	}
 }

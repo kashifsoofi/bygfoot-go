@@ -1,0 +1,8 @@
+CREATE TABLE IF NOT EXISTS region (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    sid TEXT NOT NULL,
+    name TEXT NOT NULL,
+    symbol TEXT NULL,
+    rating INTEGER NOT NULL,
+    parent_id INTEGER NULL
+);
