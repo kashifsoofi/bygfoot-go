@@ -1,6 +1,8 @@
 package main
 
 import (
+	"github.com/kashifsoofi/bygfoot-go/db"
+	log "github.com/sirupsen/logrus"
 	"log"
 
 	"fyne.io/fyne/v2/app"
