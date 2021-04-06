@@ -14,13 +14,14 @@ func NewSqlRegionStore(sqlStore *SqlStore) RegionStore {
 	return &SqlRegionStore{sqlStore}
 }
 
-func (s SqlRegionStore) List() ([]*models.Region, error) {
+func (s SqlRegionStore) ListCountries() ([]*models.Region, error) {
 	var regions []*models.Region
 	if err := s.dbx.Select(&regions,
 		`SELECT
 			*
-		FROM regions`); err != nil {
-		return nil, fmt.Errorf("could not list regions %w", err)
+		FROM Regions
+		WHERE RegionType = 2`); err != nil {
+		return nil, fmt.Errorf("could not list countries %w", err)
 	}
 	return regions, nil
 }

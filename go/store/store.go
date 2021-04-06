@@ -8,5 +8,5 @@ type Store interface {
 }
 
 type RegionStore interface {
-	List() ([]*models.Region, error)
+	ListCountries() ([]*models.Region, error)
 }

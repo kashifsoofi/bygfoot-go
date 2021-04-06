@@ -17,7 +17,7 @@ func NewApp(store store.Store) *App {
 		store: store,
 		app:   app.NewWithID("bygfoot"),
 	}
-	app.window = NewSplashWindow(app.app)
+	app.window = NewStartupWindow(app.app, store.Region())
 
 	return &app
 }

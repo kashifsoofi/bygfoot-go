@@ -40,6 +40,7 @@ func initConnection(driverName, dataSource string) *SqlStore {
 		dbx: sqlx.NewDb(db, driverName),
 		db:  db,
 	}
+	sqlStore.dbx.MapperFunc(func(s string) string { return s })
 
 	return sqlStore
 }

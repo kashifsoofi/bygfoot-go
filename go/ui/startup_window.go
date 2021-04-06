@@ -5,10 +5,16 @@ import (
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
+	"github.com/kashifsoofi/bygfoot-go/store"
+	log "github.com/sirupsen/logrus"
 )
 
-func NewStartupWindow(a fyne.App) fyne.Window {
+func NewStartupWindow(a fyne.App, store store.RegionStore) fyne.Window {
 	w := a.NewWindow("Bygfoot Football Manager")
+
+	widgetChooseCountry := widget.NewSelect(getCountries(store), func(name string) {
+
+	})
 
 	widgetStartLeague := widget.NewSelect(getLeagues(""), func(name string) {
 	})
@@ -16,8 +22,7 @@ func NewStartupWindow(a fyne.App) fyne.Window {
 	content := container.NewVBox(
 		container.NewVBox(
 			widget.NewLabel("Choose country"),
-			widget.NewSelect(getCountries(), func(name string) {
-			}),
+			widgetChooseCountry,
 		),
 		widget.NewLabel("Choose team"),
 		container.NewHSplit(
@@ -55,13 +60,19 @@ func NewStartupWindow(a fyne.App) fyne.Window {
 	return w
 }
 
-func getCountries() []string {
-	return []string{
-		"Pakistan",
-		"England",
-		"France",
-		"Germany",
+func getCountries(store store.RegionStore) []string {
+	countries, err := store.ListCountries()
+	if err != nil {
+		log.WithFields(log.Fields{
+			"Error": err,
+		}).Error("failed to load countries")
 	}
+
+	countryNames := []string{}
+	for _, c := range countries {
+		countryNames = append(countryNames, c.Name)
+	}
+	return countryNames
 }
 
 func getLeagues(country string) []string {
