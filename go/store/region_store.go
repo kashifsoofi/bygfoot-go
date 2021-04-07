@@ -14,7 +14,7 @@ func NewSqlRegionStore(sqlStore *SqlStore) RegionStore {
 	return &SqlRegionStore{sqlStore}
 }
 
-func (s SqlRegionStore) ListCountries() ([]*models.Region, error) {
+func (s SqlRegionStore) GetCountries() ([]*models.Region, error) {
 	var regions []*models.Region
 	if err := s.dbx.Select(&regions,
 		`SELECT

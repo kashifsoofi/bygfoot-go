@@ -9,14 +9,15 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-func NewStartupWindow(a fyne.App, store store.RegionStore) fyne.Window {
+var countryNameToId map[string]int
+
+func NewStartupWindow(a fyne.App, regionStore store.RegionStore, leagueStore store.LeagueStore) fyne.Window {
 	w := a.NewWindow("Bygfoot Football Manager")
 
-	widgetChooseCountry := widget.NewSelect(getCountries(store), func(name string) {
+	widgetStartLeague := &widget.Select{}
 
-	})
-
-	widgetStartLeague := widget.NewSelect(getLeagues(""), func(name string) {
+	widgetChooseCountry := widget.NewSelect(getCountries(regionStore), func(name string) {
+		widgetStartLeague.Options = getLeaguesByCountry(leagueStore, name)
 	})
 
 	content := container.NewVBox(
@@ -61,26 +62,41 @@ func NewStartupWindow(a fyne.App, store store.RegionStore) fyne.Window {
 }
 
 func getCountries(store store.RegionStore) []string {
-	countries, err := store.ListCountries()
+	countries, err := store.GetCountries()
 	if err != nil {
 		log.WithFields(log.Fields{
 			"Error": err,
 		}).Error("failed to load countries")
 	}
 
-	countryNames := []string{}
 	for _, c := range countries {
-		countryNames = append(countryNames, c.Name)
+		countryNameToId[c.Name] = c.Id
 	}
+
+	countryNames := make([]string, 0, len(countryNameToId))
+	for k := range countryNameToId {
+		countryNames = append(countryNames, k)
+	}
+
 	return countryNames
 }
 
-func getLeagues(country string) []string {
-	return []string{
-		country + " L1",
-		country + " L2",
-		country + " L3",
+func getLeaguesByCountry(store store.LeagueStore, countryName string) []string {
+	countryId := countryNameToId[countryName]
+
+	leagues, err := store.GetLeaguesByCountryId(countryId)
+	if err != nil {
+		log.WithFields(log.Fields{
+			"Error": err,
+		}).Error("failed to load leagues")
 	}
+
+	leagueNames := make([]string, 0, len(leagues))
+	for _, l := range leagues {
+		leagueNames = append(leagueNames, l.Name)
+	}
+
+	return leagueNames
 }
 
 func getDemoTreeData() map[string][]string {

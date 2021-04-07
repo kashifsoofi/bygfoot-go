@@ -17,7 +17,7 @@ func NewApp(store store.Store) *App {
 		store: store,
 		app:   app.NewWithID("bygfoot"),
 	}
-	app.window = NewStartupWindow(app.app, store.Region())
+	app.window = NewStartupWindow(app.app, store.Region(), store.League())
 
 	return &app
 }
