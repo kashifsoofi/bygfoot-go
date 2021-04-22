@@ -9,10 +9,12 @@ const (
 )
 
 type Region struct {
-	id           int
-	sid          string
-	name         string
-	symbol       string
-	rating       int
+	Id           int
+	Sid          string
+	Name         string
+	Symbol       string
+	Rating       int
+	RegionType   RegionType
+	ParentId     int
 	childRegions []*Region
 }

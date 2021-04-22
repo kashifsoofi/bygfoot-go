@@ -23,6 +23,7 @@ type SqlStore struct {
 	dbx    *sqlx.DB
 	db     *sql.DB
 	region RegionStore
+	league LeagueStore
 }
 
 func initConnection(driverName, dataSource string) *SqlStore {
@@ -40,6 +41,7 @@ func initConnection(driverName, dataSource string) *SqlStore {
 		dbx: sqlx.NewDb(db, driverName),
 		db:  db,
 	}
+	sqlStore.dbx.MapperFunc(func(s string) string { return s })
 
 	return sqlStore
 }
@@ -48,6 +50,7 @@ func NewSqlStore(driverName, dataSource string) Store {
 	sqlStore := initConnection(driverName, dataSource)
 
 	sqlStore.region = NewSqlRegionStore(sqlStore)
+	sqlStore.league = NewSqlLeagueStore(sqlStore)
 
 	runMigrations(sqlStore.db, driverName)
 
@@ -61,6 +64,10 @@ func (ss *SqlStore) Close() {
 
 func (ss *SqlStore) Region() RegionStore {
 	return ss.region
+}
+
+func (ss *SqlStore) League() LeagueStore {
+	return ss.league
 }
 
 func runMigrations(db *sql.DB, driverName string) {

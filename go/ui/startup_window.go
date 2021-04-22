@@ -5,19 +5,25 @@ import (
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
+	"github.com/kashifsoofi/bygfoot-go/store"
+	log "github.com/sirupsen/logrus"
 )
 
-func NewStartupWindow(a fyne.App) fyne.Window {
+var countryNameToId map[string]int = map[string]int{}
+
+func NewStartupWindow(a fyne.App, regionStore store.RegionStore, leagueStore store.LeagueStore) fyne.Window {
 	w := a.NewWindow("Bygfoot Football Manager")
 
-	widgetStartLeague := widget.NewSelect(getLeagues(""), func(name string) {
+	widgetStartLeague := &widget.Select{}
+
+	widgetChooseCountry := widget.NewSelect(getCountries(regionStore), func(name string) {
+		widgetStartLeague.Options = getLeaguesByCountry(leagueStore, name)
 	})
 
 	content := container.NewVBox(
 		container.NewVBox(
 			widget.NewLabel("Choose country"),
-			widget.NewSelect(getCountries(), func(name string) {
-			}),
+			widgetChooseCountry,
 		),
 		widget.NewLabel("Choose team"),
 		container.NewHSplit(
@@ -55,21 +61,42 @@ func NewStartupWindow(a fyne.App) fyne.Window {
 	return w
 }
 
-func getCountries() []string {
-	return []string{
-		"Pakistan",
-		"England",
-		"France",
-		"Germany",
+func getCountries(store store.RegionStore) []string {
+	countries, err := store.GetCountries()
+	if err != nil {
+		log.WithFields(log.Fields{
+			"Error": err,
+		}).Error("failed to load countries")
 	}
+
+	for _, c := range countries {
+		countryNameToId[c.Name] = c.Id
+	}
+
+	countryNames := make([]string, 0, len(countryNameToId))
+	for k := range countryNameToId {
+		countryNames = append(countryNames, k)
+	}
+
+	return countryNames
 }
 
-func getLeagues(country string) []string {
-	return []string{
-		country + " L1",
-		country + " L2",
-		country + " L3",
+func getLeaguesByCountry(store store.LeagueStore, countryName string) []string {
+	countryId := countryNameToId[countryName]
+
+	leagues, err := store.GetLeaguesByCountryId(countryId)
+	if err != nil {
+		log.WithFields(log.Fields{
+			"Error": err,
+		}).Error("failed to load leagues")
 	}
+
+	leagueNames := make([]string, 0, len(leagues))
+	for _, l := range leagues {
+		leagueNames = append(leagueNames, l.Name)
+	}
+
+	return leagueNames
 }
 
 func getDemoTreeData() map[string][]string {
