@@ -1,16 +1,17 @@
-package store
+package sql
 
 import (
 	"fmt"
 
 	"github.com/kashifsoofi/bygfoot-go/models"
+	"github.com/kashifsoofi/bygfoot-go/store"
 )
 
 type SqlRegionStore struct {
 	*SqlStore
 }
 
-func NewSqlRegionStore(sqlStore *SqlStore) RegionStore {
+func NewSqlRegionStore(sqlStore *SqlStore) store.RegionStore {
 	return &SqlRegionStore{sqlStore}
 }
 

@@ -1,4 +1,4 @@
-package store
+package sql
 
 import (
 	"database/sql"
@@ -10,6 +10,7 @@ import (
 	"github.com/golang-migrate/migrate/v4/database/sqlite3"
 	"github.com/golang-migrate/migrate/v4/source/httpfs"
 	"github.com/jmoiron/sqlx"
+	"github.com/kashifsoofi/bygfoot-go/store"
 	_ "github.com/mattn/go-sqlite3"
 	log "github.com/sirupsen/logrus"
 )
@@ -22,8 +23,8 @@ var migrations embed.FS
 type SqlStore struct {
 	dbx    *sqlx.DB
 	db     *sql.DB
-	region RegionStore
-	league LeagueStore
+	region store.RegionStore
+	league store.LeagueStore
 }
 
 func initConnection(driverName, dataSource string) *SqlStore {
@@ -46,7 +47,7 @@ func initConnection(driverName, dataSource string) *SqlStore {
 	return sqlStore
 }
 
-func NewSqlStore(driverName, dataSource string) Store {
+func NewSqlStore(driverName, dataSource string) store.Store {
 	sqlStore := initConnection(driverName, dataSource)
 
 	sqlStore.region = NewSqlRegionStore(sqlStore)
@@ -62,11 +63,11 @@ func (ss *SqlStore) Close() {
 	ss.dbx.Close()
 }
 
-func (ss *SqlStore) Region() RegionStore {
+func (ss *SqlStore) Region() store.RegionStore {
 	return ss.region
 }
 
-func (ss *SqlStore) League() LeagueStore {
+func (ss *SqlStore) League() store.LeagueStore {
 	return ss.league
 }
 
