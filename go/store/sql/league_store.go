@@ -1,16 +1,17 @@
-package store
+package sql
 
 import (
 	"fmt"
 
 	"github.com/kashifsoofi/bygfoot-go/models"
+	"github.com/kashifsoofi/bygfoot-go/store"
 )
 
 type SqlLeagueStore struct {
 	*SqlStore
 }
 
-func NewSqlLeagueStore(sqlStore *SqlStore) LeagueStore {
+func NewSqlLeagueStore(sqlStore *SqlStore) store.LeagueStore {
 	return &SqlLeagueStore{sqlStore}
 }
 
