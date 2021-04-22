@@ -49,4 +49,5 @@ type League struct {
 	Fixtures                     []*Fixture // The fixtures of a season for the league.
 	Stats                        LeagueStat // The current league statistics.
 	Active                       bool       // Whether the league is only a container for teams or really a league with fixtures and all.
+	RegionId                     int
 }

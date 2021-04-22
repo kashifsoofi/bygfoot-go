@@ -9,7 +9,7 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-var countryNameToId map[string]int
+var countryNameToId map[string]int = map[string]int{}
 
 func NewStartupWindow(a fyne.App, regionStore store.RegionStore, leagueStore store.LeagueStore) fyne.Window {
 	w := a.NewWindow("Bygfoot Football Manager")
