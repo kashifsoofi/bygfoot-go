@@ -21,6 +21,7 @@ func NewSplashWindow(a fyne.App) fyne.Window {
 				container.NewScroll(widget.NewLabel("Contributors List")),
 			),
 		),
+		widget.NewSeparator(),
 		// TODO: Horizontal Separator
 		container.NewVBox(
 			container.NewHBox(

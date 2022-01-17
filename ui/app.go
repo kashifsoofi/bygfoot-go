@@ -4,6 +4,8 @@ import (
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"github.com/kashifsoofi/bygfoot-go/store"
+
+	log "github.com/sirupsen/logrus"
 )
 
 type App struct {
@@ -17,11 +19,13 @@ func NewApp(store store.Store) *App {
 		store: store,
 		app:   app.NewWithID("bygfoot"),
 	}
-	app.window = NewStartupWindow(app.app, store.Region(), store.League())
+	app.window = NewSplashWindow(app.app)
+	//app.window = NewStartupWindow(app.app, store.Region(), store.League())
 
 	return &app
 }
 
 func (a *App) Run() {
+	log.Debug("app.Run")
 	a.window.ShowAndRun()
 }

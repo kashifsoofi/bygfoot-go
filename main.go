@@ -1,15 +1,20 @@
 package main
 
 import (
-	"github.com/kashifsoofi/bygfoot-go/store/sql"
+	"os"
+
 	"github.com/kashifsoofi/bygfoot-go/ui"
-	_ "github.com/mattn/go-sqlite3"
+	log "github.com/sirupsen/logrus"
 )
 
-func main() {
-	store := sql.NewSqlStore("sqlite3", "bygfoot.db")
-	defer store.Close()
+func init() {
+	log.SetOutput(os.Stdout)
+	log.SetLevel(log.DebugLevel)
+}
 
-	app := ui.NewApp(store)
+func main() {
+	log.Debug("main")
+
+	app := ui.NewApp(nil)
 	app.Run()
 }
