@@ -15,3 +15,68 @@
 # vendor/
 
 *.db
+
+# bygfoot c generated files
+autom4te.cache/
+.deps/
+aclocal.m4
+compile
+config.h
+config.h~
+config.h.in
+config.h.in~
+config.log
+config.status
+configure
+configure~
+depcomp
+install-sh
+*.gmo
+POTFILES
+Makefile
+Makefile.in
+missing
+stamp-h1
+stamp-it
+
+# Object files
+*.o
+*.ko
+*.obj
+*.elf
+
+# Linker output
+*.ilk
+*.map
+*.exp
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Libraries
+*.lib
+*.a
+*.la
+*.lo
+
+# Shared objects (inc. Windows DLLs)
+*.dll
+*.so
+*.so.*
+*.dylib
+
+# Executables
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+**/src/bygfoot
+
+# Debug files
+*.dSYM/
+*.su
+*.idb
+*.pdb
