@@ -1,4 +1,4 @@
-package ui
+package fyne
 
 import (
 	"fyne.io/fyne/v2"
