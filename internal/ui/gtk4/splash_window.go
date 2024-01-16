@@ -15,7 +15,7 @@ func NewSplashWindow(app *gtk.Application) *gtk.Window {
 	builder := gtk.NewBuilderFromString(splashXml, len(splashXml))
 
 	// MainWindow and Button are object IDs from the UI file
-	window := builder.GetObject("MainWindow").Cast().(*gtk.Window)
+	window := builder.GetObject("SplashWindow").Cast().(*gtk.Window)
 	button := builder.GetObject("Button").Cast().(*gtk.Button)
 	counter := 0
 	button.Connect("clicked", func() {
