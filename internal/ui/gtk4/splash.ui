@@ -1,16 +1,16 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Created with Cambalache 0.16.0 -->
 <interface>
-  <!-- interface-name bygfoot.ui -->
+  <!-- interface-name splash.ui -->
   <requires lib="gtk" version="4.12"/>
   <object class="GtkWindow" id="SplashWindow">
     <child>
       <object class="GtkBox">
-        <property name="orientation">vertical</property>
-        <property name="margin-top">5</property>
         <property name="margin-bottom">5</property>
-        <property name="margin-start">5</property>
         <property name="margin-end">5</property>
+        <property name="margin-start">5</property>
+        <property name="margin-top">5</property>
+        <property name="orientation">vertical</property>
         <child>
           <object class="GtkNotebook">
             <property name="page">1</property>
@@ -42,8 +42,8 @@
         <child>
           <object class="GtkSeparator">
             <property name="height-request">1</property>
-            <property name="margin-top">4</property>
             <property name="margin-bottom">4</property>
+            <property name="margin-top">4</property>
           </object>
         </child>
         <child>
@@ -72,10 +72,10 @@
               </object>
             </child>
             <child>
-              <object class="GtkLabel">
+              <object class="GtkLabel" id="label_splash_hint">
                 <property name="halign">end</property>
-                <property name="lines">3</property>
                 <property name="height-request">110</property>
+                <property name="lines">3</property>
               </object>
             </child>
             <child>
@@ -130,8 +130,8 @@
         <child>
           <object class="GtkSeparator">
             <property name="height-request">1</property>
-            <property name="margin-top">4</property>
             <property name="margin-bottom">4</property>
+            <property name="margin-top">4</property>
           </object>
         </child>
         <child>
@@ -220,7 +220,6 @@
             <child>
               <object class="GtkLabel" id="label_splash_progress">
                 <property name="label">Ready</property>
-                <property name="width-request">400</property>
               </object>
             </child>
           </object>
