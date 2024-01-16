@@ -16,7 +16,7 @@ func NewSplashWindow(app *gtk.Application) *gtk.Window {
 
 	// MainWindow and Button are object IDs from the UI file
 	window := builder.GetObject("SplashWindow").Cast().(*gtk.Window)
-	button := builder.GetObject("Button").Cast().(*gtk.Button)
+	button := builder.GetObject("button_splash_hint_back").Cast().(*gtk.Button)
 	counter := 0
 	button.Connect("clicked", func() {
 		button.SetLabel(strconv.Itoa(counter))
