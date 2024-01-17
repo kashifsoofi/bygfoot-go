@@ -44,9 +44,11 @@
 	(1,37,"GtkImage",None,26,None,None,None,-1,None),
 	(1,38,"GtkLabel",None,26,None,None,None,-1,None),
 	(1,39,"GtkLabel","label_splash_hintcounter",26,None,None,None,2,None),
-	(1,40,"GtkImage",None,3,None,None,None,-1,None),
-	(1,41,"GtkScrolledWindow",None,3,None,None,None,-1,None),
-	(1,42,"GtkListView","listview_splash_contributors",41,None,None,None,-1,None)
+	(1,40,"GtkImage",None,3,None,None,None,None,None),
+	(1,41,"GtkScrolledWindow",None,3,None,None,None,2,None),
+	(1,42,"GtkListView","listview_splash_contributors",41,None,None,None,-1,None),
+	(1,43,"GtkLabel",None,3,None,"tab",None,1,None),
+	(1,44,"GtkLabel",None,3,None,"tab",None,3,None)
   </object>
   <object_property>
 	(1,2,"GtkOrientable","orientation","vertical",None,None,None,None,None,None,None,None,None),
@@ -94,7 +96,9 @@
 	(1,39,"GtkWidget","halign","end",None,None,None,None,None,None,None,None,None),
 	(1,39,"GtkWidget","hexpand","True",None,None,None,None,None,None,None,None,None),
 	(1,40,"GtkImage","file","support_files/pixmaps/bygfoot_splash.png",None,None,None,None,None,None,None,None,None),
-	(1,40,"GtkWidget","height-request","230",None,None,None,None,None,None,None,None,None)
+	(1,40,"GtkWidget","height-request","230",None,None,None,None,None,None,None,None,None),
+	(1,43,"GtkLabel","label"," ",None,None,None,None,None,None,None,None,None),
+	(1,44,"GtkLabel","label","Contributors",None,None,None,None,None,None,None,None,None)
   </object_property>
   <object_signal>
 	(1,1,9,"GtkButton","clicked","on_button_splash_new_game_clicked",None,None,None,None,None),

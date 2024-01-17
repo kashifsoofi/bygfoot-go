@@ -22,7 +22,7 @@
             </child>
             <child type="tab">
               <object class="GtkLabel">
-                <property name="label"></property>
+                <property name="label"> </property>
               </object>
             </child>
             <child>
