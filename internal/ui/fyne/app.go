@@ -1,11 +1,11 @@
 package fyne
 
 import (
+	"log/slog"
+
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"github.com/kashifsoofi/bygfoot-go/internal/store"
-
-	log "github.com/sirupsen/logrus"
 )
 
 type App struct {
@@ -26,6 +26,6 @@ func NewApp(store store.Store) *App {
 }
 
 func (a *App) Run() {
-	log.Debug("app.Run")
+	slog.Debug("app.Run")
 	a.window.ShowAndRun()
 }

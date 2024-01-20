@@ -1,12 +1,13 @@
 package fyne
 
 import (
+	"log/slog"
+
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
 	"github.com/kashifsoofi/bygfoot-go/internal/store"
-	log "github.com/sirupsen/logrus"
 )
 
 var countryNameToId map[string]int = map[string]int{}
@@ -64,9 +65,7 @@ func NewStartupWindow(a fyne.App, regionStore store.RegionStore, leagueStore sto
 func getCountries(store store.RegionStore) []string {
 	countries, err := store.GetCountries()
 	if err != nil {
-		log.WithFields(log.Fields{
-			"Error": err,
-		}).Error("failed to load countries")
+		slog.Error("failed to load countries", slog.String("error", err.Error()))
 	}
 
 	for _, c := range countries {
@@ -86,9 +85,7 @@ func getLeaguesByCountry(store store.LeagueStore, countryName string) []string {
 
 	leagues, err := store.GetLeaguesByCountryId(countryId)
 	if err != nil {
-		log.WithFields(log.Fields{
-			"Error": err,
-		}).Error("failed to load leagues")
+		slog.Error("failed to load leagues", slog.String("error", err.Error()))
 	}
 
 	leagueNames := make([]string, 0, len(leagues))

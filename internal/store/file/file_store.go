@@ -10,9 +10,10 @@ import (
 	"strconv"
 	"strings"
 
+	"log/slog"
+
 	"github.com/kashifsoofi/bygfoot-go/internal/domain"
 	"github.com/kashifsoofi/bygfoot-go/internal/store"
-	log "github.com/sirupsen/logrus"
 )
 
 const homeDirName = ".bygfoot"
@@ -45,7 +46,7 @@ func exists(path string) bool {
 func getHomeDir() string {
 	dirname, err := os.UserHomeDir()
 	if err != nil {
-		log.Error("cannot get user home dir")
+		slog.Error("cannot get user home dir")
 		panic(err)
 	}
 	return dirname
@@ -54,7 +55,7 @@ func getHomeDir() string {
 func getCurrentDir() string {
 	ex, err := os.Executable()
 	if err != nil {
-		log.Error("cannot get current path")
+		slog.Error("cannot get current path")
 		panic(err)
 	}
 
@@ -85,7 +86,7 @@ func loadOptionsFile(filename string) *domain.OptionList {
 	support_file := filename
 	file, err := os.Open(support_file)
 	if err != nil {
-		log.Error("cannot open file: ", support_file)
+		slog.Error("cannot open file", slog.String("support_file", support_file))
 		panic(err)
 	}
 	defer file.Close()

@@ -4,9 +4,10 @@ import (
 	_ "embed"
 	"fmt"
 
+	"log/slog"
+
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 	"github.com/kashifsoofi/bygfoot-go/internal/store"
-	log "github.com/sirupsen/logrus"
 )
 
 //go:embed splash.ui
@@ -67,13 +68,13 @@ func (w *SplashWindow) Show() {
 }
 
 func (w *SplashWindow) splashWindowDestroy() {
-	log.Debug("splashWindowDestroy")
+	slog.Debug("splashWindowDestroy")
 	w.hintsStore.SaveHintNumber(w.hintNum)
 	w.window.Destroy()
 }
 
 func (w *SplashWindow) splashWindowCloseRequestHandler() bool {
-	log.Debug("splashWindowCloseRequestHandler")
+	slog.Debug("splashWindowCloseRequestHandler")
 	w.splashWindowDestroy()
 	return false
 }
@@ -95,31 +96,31 @@ func (w *SplashWindow) showHint() {
 }
 
 func (w *SplashWindow) buttonSplashHintBackClicked() {
-	log.Debug("buttonSplashHintBackClicked")
+	slog.Debug("buttonSplashHintBackClicked")
 	w.hintNum -= 1
 	w.showHint()
 }
 
 func (w *SplashWindow) buttonSplashHintNextClicked() {
-	log.Debug("buttonSplashHintNextClicked")
+	slog.Debug("buttonSplashHintNextClicked")
 	w.hintNum += 1
 	w.showHint()
 }
 
 func (w *SplashWindow) buttonSplashNewGameClicked() {
-	log.Debug("buttonSplashNewGameClicked")
+	slog.Debug("buttonSplashNewGameClicked")
 }
 
 func (w *SplashWindow) buttonSplashLoadGameClicked() {
-	log.Debug("buttonSplashLoadGameClicked")
+	slog.Debug("buttonSplashLoadGameClicked")
 }
 
 func (w *SplashWindow) buttonSplashResumeGameClicked() {
-	log.Debug("buttonSplashResumeGameClicked")
+	slog.Debug("buttonSplashResumeGameClicked")
 }
 
 func (w *SplashWindow) buttonSplashQuitClicked() {
-	log.Debug("buttonSplashQuitClicked")
+	slog.Debug("buttonSplashQuitClicked")
 	app := w.window.Application()
 	w.splashWindowDestroy()
 	app.Quit()

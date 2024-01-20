@@ -2,12 +2,12 @@ package gtk4
 
 import (
 	_ "embed"
+	"log/slog"
 	"os"
 
 	"github.com/diamondburned/gotk4/pkg/gio/v2"
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 	"github.com/kashifsoofi/bygfoot-go/internal/store"
-	log "github.com/sirupsen/logrus"
 )
 
 type App struct {
@@ -27,7 +27,7 @@ func NewApp(store store.Store) *App {
 }
 
 func (a *App) Run() {
-	log.Debug("app.Run")
+	slog.Debug("app.Run")
 	if code := a.app.Run(os.Args); code > 0 {
 		os.Exit(code)
 	}
