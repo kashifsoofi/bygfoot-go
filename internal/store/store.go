@@ -14,8 +14,7 @@ type Store interface {
 type HintsStore interface {
 	LoadHintNumber() int
 	SaveHintNumber(int)
-	Hint(int) string
-	TotalHints() int
+	Hints() []string
 }
 
 type RegionStore interface {

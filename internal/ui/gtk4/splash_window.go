@@ -6,6 +6,7 @@ import (
 
 	"github.com/diamondburned/gotk4/pkg/gtk/v4"
 	"github.com/kashifsoofi/bygfoot-go/internal/store"
+	log "github.com/sirupsen/logrus"
 )
 
 //go:embed splash.ui
@@ -20,6 +21,7 @@ type SplashWindow struct {
 
 	hintsStore store.HintsStore
 	hintNum    int
+	hints      []string
 }
 
 func NewSplashWindow(app *gtk.Application, hintsStore store.HintsStore) *SplashWindow {
@@ -30,15 +32,30 @@ func NewSplashWindow(app *gtk.Application, hintsStore store.HintsStore) *SplashW
 
 	// MainWindow and Button are object IDs from the UI file
 	sw.window = builder.GetObject("SplashWindow").Cast().(*gtk.Window)
+	sw.window.ConnectCloseRequest(sw.splashWindowCloseRequestHandler)
+
 	sw.labelSplashHintCounter = builder.GetObject("label_splash_hintcounter").Cast().(*gtk.Label)
 	sw.labelSplashHint = builder.GetObject("label_splash_hint").Cast().(*gtk.Label)
 	sw.buttonSplashHintBack = builder.GetObject("button_splash_hint_back").Cast().(*gtk.Button)
-	sw.buttonSplashHintNext = builder.GetObject("button_splash_hint_next").Cast().(*gtk.Button)
-
 	sw.buttonSplashHintBack.ConnectClicked(sw.buttonSplashHintBackClicked)
+
+	sw.buttonSplashHintNext = builder.GetObject("button_splash_hint_next").Cast().(*gtk.Button)
 	sw.buttonSplashHintNext.ConnectClicked(sw.buttonSplashHintNextClicked)
 
+	buttonSplashNewGame := builder.GetObject("button_splash_new_game").Cast().(*gtk.Button)
+	buttonSplashNewGame.ConnectClicked(sw.buttonSplashNewGameClicked)
+
+	buttonSplashLoadGame := builder.GetObject("button_splash_load_game").Cast().(*gtk.Button)
+	buttonSplashLoadGame.ConnectClicked(sw.buttonSplashLoadGameClicked)
+
+	buttonSplashResumeGame := builder.GetObject("button_splash_resume_game").Cast().(*gtk.Button)
+	buttonSplashResumeGame.ConnectClicked(sw.buttonSplashResumeGameClicked)
+
+	buttonSplashQuit := builder.GetObject("button_splash_quit").Cast().(*gtk.Button)
+	buttonSplashQuit.ConnectClicked(sw.buttonSplashQuitClicked)
+
 	sw.hintNum = hintsStore.LoadHintNumber()
+	sw.hints = hintsStore.Hints()
 	sw.showHint()
 
 	app.AddWindow(sw.window)
@@ -49,8 +66,20 @@ func (w *SplashWindow) Show() {
 	w.window.Show()
 }
 
+func (w *SplashWindow) splashWindowDestroy() {
+	log.Debug("splashWindowDestroy")
+	w.hintsStore.SaveHintNumber(w.hintNum)
+	w.window.Destroy()
+}
+
+func (w *SplashWindow) splashWindowCloseRequestHandler() bool {
+	log.Debug("splashWindowCloseRequestHandler")
+	w.splashWindowDestroy()
+	return false
+}
+
 func (w *SplashWindow) showHint() {
-	totalHints := w.hintsStore.TotalHints()
+	totalHints := len(w.hints) - 1
 	if w.hintNum < 0 {
 		w.hintNum = totalHints
 	}
@@ -58,7 +87,7 @@ func (w *SplashWindow) showHint() {
 		w.hintNum = 0
 	}
 
-	hint := w.hintsStore.Hint(w.hintNum)
+	hint := w.hints[w.hintNum]
 	w.labelSplashHint.SetLabel(hint)
 
 	hintCounter := fmt.Sprintf("(%d/%d)", w.hintNum+1, totalHints+1)
@@ -66,11 +95,32 @@ func (w *SplashWindow) showHint() {
 }
 
 func (w *SplashWindow) buttonSplashHintBackClicked() {
+	log.Debug("buttonSplashHintBackClicked")
 	w.hintNum -= 1
 	w.showHint()
 }
 
 func (w *SplashWindow) buttonSplashHintNextClicked() {
+	log.Debug("buttonSplashHintNextClicked")
 	w.hintNum += 1
 	w.showHint()
+}
+
+func (w *SplashWindow) buttonSplashNewGameClicked() {
+	log.Debug("buttonSplashNewGameClicked")
+}
+
+func (w *SplashWindow) buttonSplashLoadGameClicked() {
+	log.Debug("buttonSplashLoadGameClicked")
+}
+
+func (w *SplashWindow) buttonSplashResumeGameClicked() {
+	log.Debug("buttonSplashResumeGameClicked")
+}
+
+func (w *SplashWindow) buttonSplashQuitClicked() {
+	log.Debug("buttonSplashQuitClicked")
+	app := w.window.Application()
+	w.splashWindowDestroy()
+	app.Quit()
 }

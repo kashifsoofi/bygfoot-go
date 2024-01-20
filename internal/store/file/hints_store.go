@@ -44,12 +44,12 @@ func (s hintsStore) SaveHintNumber(hintNum int) {
 	os.WriteFile(filename, []byte(strconv.Itoa(hintNum)), 0644)
 }
 
-func (s hintsStore) Hint(hintNum int) string {
-	return s.hints.ListItem(hintNum).StringValue
-}
-
-func (s hintsStore) TotalHints() int {
-	return s.hints.Length() - 1
+func (s hintsStore) Hints() []string {
+	hints := []string{}
+	for i := 0; i < s.hints.Length(); i++ {
+		hints = append(hints, s.hints.ListItem(i).StringValue)
+	}
+	return hints
 }
 
 func getHintsFilename() string {
