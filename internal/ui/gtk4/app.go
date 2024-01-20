@@ -19,13 +19,9 @@ type App struct {
 const appId = "com.github.kashifsoofi.bygfoot-go"
 
 func NewApp(store store.Store) *App {
-	gtkApp := gtk.NewApplication(appId, gio.ApplicationFlagsNone)
-	gtkApp.ConnectActivate(func() { activate(gtkApp) })
-
-	app := App{
-		store: store,
-		app:   gtkApp,
-	}
+	app := App{store: store}
+	app.app = gtk.NewApplication(appId, gio.ApplicationFlagsNone)
+	app.app.ConnectActivate(app.activate)
 
 	return &app
 }
@@ -37,7 +33,7 @@ func (a *App) Run() {
 	}
 }
 
-func activate(app *gtk.Application) {
-	window := NewSplashWindow(app)
+func (a *App) activate() {
+	window := NewSplashWindow(a.app, a.store.Hints())
 	window.Show()
 }
