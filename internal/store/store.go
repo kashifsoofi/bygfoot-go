@@ -6,8 +6,16 @@ import (
 
 type Store interface {
 	Close()
-	Region() RegionStore
+	Hints() HintsStore
 	League() LeagueStore
+	Region() RegionStore
+}
+
+type HintsStore interface {
+	LoadHintNumber() int
+	SaveHintNumber(int)
+	Hint(int) string
+	TotalHints() int
 }
 
 type RegionStore interface {
